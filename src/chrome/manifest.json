@@ -1,6 +1,6 @@
 {
   "name": "iRO Import Extension",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "manifest_version": 2,
   "description": "This extension let's you import profiles into iRO.",
   "homepage_url": "http://www.heads2hunt.de",

@@ -3,102 +3,40 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<link rel="stylesheet" href="css/bootstrap.css">
-	<link rel="stylesheet" href="css/bootstrap-responsive.css">
-	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<script type="text/javascript" src="javascript/lib/jquery.js"></script>
-	<script type="text/javascript" src="javascript/bootstrap.js"></script>
-	<script type="text/javascript" src="javascript/signIn.js"></script>
-	<script type="text/javascript" src="javascript/jquery.validate.js"></script>
-	<link rel="stylesheet" href="css/style.css">
-	<style type="text/css">
-		.colorgraph {
-			background: #c4e17f linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4) repeat scroll 0 0;
-			border-radius: 5px;
-			border-top: 0 none;
-			height: 5px;
-		}
-	</style>
+	<link rel="stylesheet" href="css/main.css">
+	<script type="text/javascript" src="js/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.js"></script>
+	<script type="text/javascript" src="js/signIn.js"></script>
+	<script type="text/javascript" src="js/jquery.validate.js"></script>
 </head>
 
 <body>
-<div class="container" style='width:400px;'>
-	<div class="row" style="margin-bottom:10px;">
-		<div class="col-md-4" style="width:130px; display:inline;float:left;padding-top: 20px;">
-			<a href="http://www.urdhva-tech.com" title="Urdhva Tech" target="_blank">
-				<img src="/img/icon-128px.png" width="100" />
-			</a>
-		</div>
-		<div class="col-md-8" style="width:250px;float: right;padding-top: 20px;">
-			<p>Adding leads to <a target="_blank" href="http://www.sugarcrm.com" title="SugarCRM">SugarCRM</a> or <a target="_blank" href="https://suitecrm.com/" title="SuiteCRM">SuiteCRM</a> made super easy.. One click captures the contact information from LinkedIn/XING profiles.</p>
-		</div>
-	</div>
+<div class="iro-login container-fluid">
 	<div class="row">
 		<div class="col-md-12">
-			<hr class="colorgraph">
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<div id='loading' style="text-align: center;display:none;"><i class="fa fa-refresh fa-spin fa-2x"></i></div>
-			<div id="error" class="alert alert-danger col-sm-12" style="display: none;">Could not authenticate <span id='error_reason'></span></div>
-			<div id="success" style="display: none;">You have been successfully logged In.</div>
-		</div>
-	</div>
+			<h3>
+				iRO Importer
+			</h3>
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Login
+					</h3>
+				</div>
+				<div class="panel-body">
+					<form class="iro-login__form" role="form">
+						<div class="form-group">
 
-	<div class="row" id="loginbox">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<!--<div class="panel-title">Sign In</div>-->
-				<h3 class="panel-title">Sign In</h3>
-				<!-- <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">Forgot password?</a></div> -->
-			</div>
-			<div class="panel-body" style="padding:30px">
-				<div class="alert alert-danger col-sm-12" id="login-alert" style="display:none"></div>
-
-				<form accept-charset="UTF-8" role="form" class="form-horizontal" id="login_form">
-					<div class="form-group">
-						<div class="input-group">
-							<span class="input-group-addon"><i class="fa fa-globe"></i></span>
-							<input class="regularField form-control required" id="sugar_url" name="user[url]" type="text" placeholder="CRM Url" title="CRM Url" required/>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<span class="input-group-addon"><i class="fa fa-user"></i></span>
-							<input class="regularField form-control required" id="user_name" name="user[name]" type="text" placeholder="Username" title="Username" required/>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="input-group">
-							<span class="input-group-addon"><i class="fa fa-user-secret"></i></span>
-							<input class="regularField form-control required" id="user_password" name="user[password]" type="password" value="" title="Password" placeholder="Password" required/>
-						</div>
-					</div>
-					<div class="input-group" style='display:none;'>
-						<div class="checkbox">
-							<label>
-								<input class="regularField" type="checkbox"  name="save_popup_option" id="save_popup_option"  checked /> Preview & Edit leads before save
+							<label for="iro-login__serial">
+								Seriennummer
 							</label>
+							<input type="text" class="form-control iro-login__serial" id="iro-login__serial" />
 						</div>
-					</div>
-					<div class="form-group" style="margin-top:10px">
-						<!-- Button -->
-
-						<div class="col-sm-12 controls">
-							<button id="login" class="btn btn-success" type="submit">Login</button>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<hr class="colorgraph">
-					</div>
-					<div class="form-group">
-						<div class="col-md-12">
-							<div style="font-size:85%;text-align:center;">Developed by <a href="http://www.urdhva-tech.com" title="UrdhvaTech" target="_blank"><img src="/img/urdhvatech-logo-24.png" /> Urdhva Tech</a></div>
-						</div>
-					</div>
-				</form>
+						<button type="submit" class="btn btn-primary" id="iro-login__submit">
+							Bestätigen
+						</button>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
