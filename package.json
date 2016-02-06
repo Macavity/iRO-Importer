@@ -1,0 +1,32 @@
+{
+  "name": "iro-import",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Macavity/iRO-Importer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Macavity/iRO-Importer/issues"
+  },
+  "homepage": "https://github.com/Macavity/iRO-Importer#readme",
+  "dependencies": {
+    "bootstrap-sass": "^3.3.6",
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.7.0",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-copy": "^0.8.2",
+    "grunt-contrib-sass": "^0.9.2",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-shell": "^1.1.2"
+  }
+}
