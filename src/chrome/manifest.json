@@ -1,6 +1,6 @@
 {
   "name": "iRO Import Extension",
-  "version": "0.1.1",
+  "version": "0.1.8",
   "manifest_version": 2,
   "description": "This extension let's you import profiles into iRO.",
   "homepage_url": "http://www.heads2hunt.de",
@@ -11,10 +11,7 @@
   },
   "default_locale": "en",
   "background": {
-    "scripts": [
-      "src/bg/background.js"
-    ],
-    "persistent": false
+    "page": "src/bg/background.html"
   },
   "browser_action": {
     "default_icon": "icons/icon19.png",

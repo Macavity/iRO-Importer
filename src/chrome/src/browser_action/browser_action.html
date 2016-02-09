@@ -3,37 +3,43 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<link rel="stylesheet" href="css/main.css">
-	<script type="text/javascript" src="js/jquery/jquery.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.js"></script>
-	<script type="text/javascript" src="js/signIn.js"></script>
-	<script type="text/javascript" src="js/jquery.validate.js"></script>
+	<link rel="stylesheet" href="/css/main.css">
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/angular.min.js"></script>
+	<script type="text/javascript" src="/js/main.js"></script>
 </head>
 
 <body>
-<div class="iro-login container-fluid">
+<div class="iro-login container-fluid" style="width: 300px">
 	<div class="row">
 		<div class="col-md-12">
-			<h3>
+			<h3 data-l10n="importer-headline">
 				iRO Importer
 			</h3>
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title">
+					<h3 class="panel-title" data-l10n="login">
 						Login
 					</h3>
 				</div>
 				<div class="panel-body">
-					<form class="iro-login__form" role="form">
+					<form class="iro-login__form form-horizontal" role="form">
 						<div class="form-group">
 
-							<label for="iro-login__serial">
+							<label for="iro-login__serial" data-l10n="client-api">
+								API
+							</label>
+							<input type="text" class="form-control iro-login__serial" id="iro-login__api-url" />
+						</div>
+						<div class="form-group">
+
+							<label for="iro-login__serial" data-l10n="client-serial">
 								Seriennummer
 							</label>
 							<input type="text" class="form-control iro-login__serial" id="iro-login__serial" />
 						</div>
-						<button type="submit" class="btn btn-primary" id="iro-login__submit">
-							Bestätigen
+						<button type="submit" class="btn btn-primary" id="iro-login__submit" data-l10n="save">
+							Speichern
 						</button>
 					</form>
 				</div>

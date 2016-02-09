@@ -4,9 +4,9 @@ module.exports = function(grunt) {
     "use strict";
 
     var settings = grunt.file.readJSON("src/settings.json");
+    var pkg = grunt.file.readJSON("package.json");
 
     grunt.initConfig({
-        pkg: grunt.file.readJSON("package.json"),
 
         /*
          * Copy Task
@@ -21,7 +21,14 @@ module.exports = function(grunt) {
                         dest: 'build/chrome',
                         filter: 'isFile'
                     }
-                ]
+                ]/*,
+                options: {
+                    process: function (content, srcpath) {
+
+                        return content
+                            .replace('PACKAGE_VERSION', settings.version);
+                    }
+                }*/
             },
             fonts: {
                 files: [
@@ -55,6 +62,19 @@ module.exports = function(grunt) {
                         dest: 'build/chrome/css/',
                         filter: 'isFile'
                     }*/
+                ]
+            },
+            lib: {
+                files: [
+                    {
+                        expand: true,
+                        flatten:true,
+                        src: [
+                            'node_modules/jquery/dist/jquery.min.js',
+                            'node_modules/angular/angular.min.js'
+                        ],
+                        dest: 'build/chrome/js/'
+                    }
                 ]
             }
         },
@@ -115,7 +135,8 @@ module.exports = function(grunt) {
             "sass:build",
             "copy:fonts",
             "copy:css",
-            "copy:chrome"
+            "copy:chrome",
+            "copy:lib"
         ]);
     });
 
