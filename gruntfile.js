@@ -38,20 +38,23 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        src: 'build/css/*',
+                        cwd: 'build/css/',
+                        src: '*',
+                        dest: 'build/chrome/css/',
+                        filter: 'isFile'
+                    }/*,{
+                        expand: true,
+                        cwd: 'build/css/',
+                        src: '*',
                         dest: 'build/chrome/css/',
                         filter: 'isFile'
                     },{
                         expand: true,
-                        src: 'build/css/*',
-                        dest: 'build/firefox/css/',
+                        cwd: 'build/css/',
+                        src: '*',
+                        dest: 'build/chrome/css/',
                         filter: 'isFile'
-                    },{
-                        expand: true,
-                        src: 'build/css/*',
-                        dest: 'build/safari/css/',
-                        filter: 'isFile'
-                    }
+                    }*/
                 ]
             }
         },
