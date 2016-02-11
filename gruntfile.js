@@ -4,9 +4,9 @@ module.exports = function(grunt) {
     "use strict";
 
     var settings = grunt.file.readJSON("src/settings.json");
+    var pkg = grunt.file.readJSON("package.json");
 
     grunt.initConfig({
-        pkg: grunt.file.readJSON("package.json"),
 
         /*
          * Copy Task
@@ -21,7 +21,14 @@ module.exports = function(grunt) {
                         dest: 'build/chrome',
                         filter: 'isFile'
                     }
-                ]
+                ]/*,
+                options: {
+                    process: function (content, srcpath) {
+
+                        return content
+                            .replace('PACKAGE_VERSION', settings.version);
+                    }
+                }*/
             },
             fonts: {
                 files: [
@@ -38,19 +45,35 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        src: 'build/css/*',
+                        cwd: 'build/css/',
+                        src: '*',
+                        dest: 'build/chrome/css/',
+                        filter: 'isFile'
+                    }/*,{
+                        expand: true,
+                        cwd: 'build/css/',
+                        src: '*',
                         dest: 'build/chrome/css/',
                         filter: 'isFile'
                     },{
                         expand: true,
-                        src: 'build/css/*',
-                        dest: 'build/firefox/css/',
+                        cwd: 'build/css/',
+                        src: '*',
+                        dest: 'build/chrome/css/',
                         filter: 'isFile'
-                    },{
+                    }*/
+                ]
+            },
+            lib: {
+                files: [
+                    {
                         expand: true,
-                        src: 'build/css/*',
-                        dest: 'build/safari/css/',
-                        filter: 'isFile'
+                        flatten:true,
+                        src: [
+                            'node_modules/jquery/dist/jquery.min.js',
+                            'node_modules/angular/angular.min.js'
+                        ],
+                        dest: 'build/chrome/js/'
                     }
                 ]
             }
@@ -99,6 +122,7 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-copy");
+    grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-contrib-sass");
     grunt.loadNpmTasks("grunt-shell");
@@ -111,7 +135,8 @@ module.exports = function(grunt) {
             "sass:build",
             "copy:fonts",
             "copy:css",
-            "copy:chrome"
+            "copy:chrome",
+            "copy:lib"
         ]);
     });
 
