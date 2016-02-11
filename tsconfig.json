@@ -8,7 +8,12 @@
   },
   "files": [
     "typings/browser.d.ts",
-    "src/js/main.ts"
+    "src/js/BrowserHandler.ts",
+    "src/js/OptionsComponent.ts",
+    "src/js/ParserComponent.ts",
+    "src/js/ChromeHandler.ts",
+    "src/js/main.ts",
+    "typings/browser/ambient/jquery/jquery.d.ts"
   ],
   "compileOnSave": false,
   "atom": {

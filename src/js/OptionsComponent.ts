@@ -6,8 +6,14 @@ import "reflect-metadata";
 
 import {Component} from 'angular2/core';
 import {bootstrap} from 'angular2/platform/browser';
+import {BrowserHandler} from "./BrowserHandler";
 
 import * as $ from "jquery";
+
+interface PluginOptions {
+    api_url: string;
+    serial: string;
+}
 
 /*
  * Options Page
@@ -34,7 +40,7 @@ import * as $ from "jquery";
                                     API URL
                                 </label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control iro-login__api-url" id="iro-login__api-url" />
+                                    <input [(ngModel)]="options.api_url" type="text" class="form-control iro-login__api-url" />
                                 </div>
                             </div>
                             <div class="form-group">
@@ -42,7 +48,7 @@ import * as $ from "jquery";
                                     Seriennummer
                                 </label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control iro-login__serial" id="iro-login__serial" />
+                                    <input [(ngModel)]="options.serial" type="text" class="form-control iro-login__serial" />
                                 </div>
                             </div>
                             <div class="form-group">
@@ -62,6 +68,13 @@ import * as $ from "jquery";
 
 export default class OptionsComponent {
 
+    public options: PluginOptions = {
+        api_url: "",
+        serial: ""
+    };
+
+    private browser:BrowserHandler;
+
     private submitButton:JQuery;
     private serialInput:JQuery;
     private apiInput:JQuery;
@@ -69,11 +82,17 @@ export default class OptionsComponent {
     private apiUrl: string;
     private serial: string;
 
+
     private body:JQuery;
 
     constructor(){
         console.log("OptionsPage constructor");
         this.body = $("body");
+
+        this.browser = new BrowserHandler();
+
+        this.options.api_url = this.browser.getApiUrl();
+        this.options.serial = this.browser.getClientSerial();
 
         this.submitButton = $("#iro-login__submit");
         this.serialInput = $("#iro-login__serial");
@@ -81,8 +100,6 @@ export default class OptionsComponent {
 
         this.submitButton.on('click', () => {
             if(this.validateOptions() && this.checkSerial()){
-
-
 
                 this.saveOptions();
             }
