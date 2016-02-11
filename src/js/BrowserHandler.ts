@@ -1,5 +1,6 @@
 
 import ChromeHandler from "./ChromeHandler";
+import {PluginOptions} from "./OptionsComponent";
 
 export enum BrowserType {
     Chrome,
@@ -31,12 +32,32 @@ export class BrowserHandler {
         }
     }
 
+    /*
+     * Get from Storage
+     */
+
+    public getOptions():PluginOptions{
+        return {
+            api_url: this.browser.getStorageVariable(storageKeys.api_url),
+            serial: this.browser.getStorageVariable(storageKeys.serial)
+        }
+    }
+
     public getClientSerial(){
         return this.browser.getStorageVariable(storageKeys.serial);
     }
 
     public getApiUrl(){
         return this.browser.getStorageVariable(storageKeys.api_url);
+    }
+
+    /*
+     * Save to Storage
+     */
+
+    public saveOptions(options:PluginOptions){
+        this.browser.setStorageVariable(storageKeys.api_url, options.api_url);
+        this.browser.setStorageVariable(storageKeys.serial, options.serial);
     }
 
     public saveClientSerial(serial){

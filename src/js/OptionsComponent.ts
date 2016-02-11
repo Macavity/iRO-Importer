@@ -10,7 +10,7 @@ import {BrowserHandler} from "./BrowserHandler";
 
 import * as $ from "jquery";
 
-interface PluginOptions {
+export interface PluginOptions {
     api_url: string;
     serial: string;
 }
@@ -35,12 +35,13 @@ interface PluginOptions {
                     </div>
                     <div class="panel-body">
                         <form class="iro-login__form form-horizontal" role="form">
-                            <div class="form-group">
+                            <div class="form-group"
+                                [class.has-success]="options.api_url && validateApiUrl(options.api_url)">
                                 <label class="col-sm-2" for="iro-login__api-url" data-l10n="client-api">
                                     API URL
                                 </label>
                                 <div class="col-sm-10">
-                                    <input [(ngModel)]="options.api_url" type="text" class="form-control iro-login__api-url" />
+                                    <input id="iro-login__api-url" [(ngModel)]="options.api_url" type="text" class="form-control iro-login__api-url" />
                                 </div>
                             </div>
                             <div class="form-group">
@@ -48,12 +49,12 @@ interface PluginOptions {
                                     Seriennummer
                                 </label>
                                 <div class="col-sm-10">
-                                    <input [(ngModel)]="options.serial" type="text" class="form-control iro-login__serial" />
+                                    <input id="iro-login__serial" [(ngModel)]="options.serial" type="text" class="form-control iro-login__serial" />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" class="btn btn-primary" id="iro-login__submit" data-l10n="save">
+                                    <button id="iro-login__submit" type="submit" class="btn btn-primary" data-l10n="save" (click)="saveOptions(options)">
                                         Speichern
                                     </button>
                                 </div>
@@ -91,55 +92,36 @@ export default class OptionsComponent {
 
         this.browser = new BrowserHandler();
 
-        this.options.api_url = this.browser.getApiUrl();
-        this.options.serial = this.browser.getClientSerial();
+        // Get options from storage
+        this.options = this.browser.getOptions();
 
-        this.submitButton = $("#iro-login__submit");
         this.serialInput = $("#iro-login__serial");
         this.apiInput = $("#iro-login__api-url");
 
-        this.submitButton.on('click', () => {
-            if(this.validateOptions() && this.checkSerial()){
-
-                this.saveOptions();
-            }
-        });
-
-        //let clientSerial = Main.getClientSerial();
-
-        //this.serialInput.val(clientSerial);
-
     }
 
-    private validateOptions(){
+    public saveOptions(options:PluginOptions){
+        if(this.validateSerial(options) && this.validateApiUrl(options)){
 
-        var serial = this.serialInput.val();
-        var apiUrl = this.apiInput.val();
+            $.ajax({
+                url: options.api_url+'/'+options.serial+'/systemcheck', success: (result) => {
 
-        let serialFormGroup = this.serialInput.parent();
-        let apiFormGroup = this.apiInput.parent();
+                    this.options = options;
+                    this.browser.saveOptions(this.options);
 
-        serialFormGroup.removeClass('has-error,has-success');
-        apiFormGroup.removeClass('has-error,has-success');
+                }});
 
-        /*
-         * Serial Number
-         */
-        if(serial.length == 0){
-            serialFormGroup.addClass('has-error');
+
+
         }
-        else {
-            serialFormGroup.addClass('has-success');
-            this.serial = serial;
-        }
+    }
 
-        /*
-         * API URL
-         */
+    public validateApiUrl(options:PluginOptions){
+        let apiUrl = options.api_url;
         let validUrl = apiUrl.match(/(https?:\/\/|)([A-z0-9][A-z0-9\.\-\_]+)/g);
 
         if(apiUrl.length == 0){
-            apiFormGroup.addClass('has-error');
+            return false;
         }
         else{
             if(validUrl){
@@ -150,35 +132,32 @@ export default class OptionsComponent {
 
                 this.apiInput.val(apiUrl);
                 this.apiUrl = apiUrl;
-
-                apiFormGroup.addClass('has-success');
+                return true;
             }
             else {
-                apiFormGroup.addClass('has-error');
+                return false;
             }
         }
 
-        if(apiFormGroup.hasClass('has-success') && serialFormGroup.hasClass('has-success')){
-            $.ajax({
-                url: apiUrl+'/'+serial+'/systemcheck', success: function(result){
-                    // Success.
-                }});
+    }
 
+    private validateSerial(options:PluginOptions){
+
+        var serial = options.serial;
+
+        let serialFormGroup = this.serialInput.parent();
+
+        if(serial.length == 0){
+            return false;
         }
-    }
-
-    private validateApiUrl(value){
-
-
+        else {
+            return true;
+        }
 
     }
 
-    private checkSerial(){
+    private checkSerial(serial:string){
         // Call the API to check if the serial checks out.
-    }
-
-    private saveOptions(){
-        //Main.saveClientSerial(this.serialInput.val());
-        //console.log(Main.getClientSerial());
+        return true;
     }
 }
