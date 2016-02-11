@@ -9,10 +9,30 @@ module.exports = function(grunt) {
     grunt.initConfig({
 
         browserify: {
+            libs: {
+                options: {
+                    shim: {
+                        jquery: {
+                            path: './node_modules/jquery/dist/jquery.min.js',
+                            exports: '$'
+                        }
+                    }
+                },
+                src: [
+                    './node_modules/jquery/dist/jquery.min.js'
+                ],
+                dest: 'build/chrome/js/libs.js'
+            },
             main: {
                 src: "src/js/main.ts",
                 dest: "src/js/main.js",
                 options: {
+                    alias: {
+                        jquery: './node_modules/jquery/dist/jquery.min.js'
+                    },
+                    external: {
+                        jquery: './node_modules/jquery/dist/jquery.min.js'
+                    },
                     browserifyOptions: {
                         debug: true
                     },
