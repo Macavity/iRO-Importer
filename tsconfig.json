@@ -3,11 +3,12 @@
     "target": "es5",
     "module": "commonjs",
     "sourceMap": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "experimentalDecorators": true
   },
   "files": [
-    "./typings/browser.d.ts",
-    "./src/chrome/js/main.ts"
+    "typings/browser.d.ts",
+    "src/js/main.ts"
   ],
   "compileOnSave": false,
   "atom": {
