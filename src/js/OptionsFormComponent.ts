@@ -5,14 +5,20 @@
 import "reflect-metadata";
 
 import {Component} from 'angular2/core';
+import {NgForm}    from 'angular2/common';
 import {bootstrap} from 'angular2/platform/browser';
 import {BrowserHandler} from "./BrowserHandler";
 
 import * as $ from "jquery";
 
-export interface PluginOptions {
-    api_url: string;
-    serial: string;
+export class PluginOptions {
+
+    constructor(
+        public serial: string,
+        public api_url: string
+    ) {
+
+    }
 }
 
 /*
@@ -54,7 +60,7 @@ export interface PluginOptions {
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button id="iro-login__submit" type="submit" class="btn btn-primary" data-l10n="save" (click)="saveOptions(options)">
+                                    <button id="iro-login__submit" type="submit" class="btn btn-primary" data-l10n="save" (click)="saveOptions()">
                                         Speichern
                                     </button>
                                 </div>
@@ -67,7 +73,11 @@ export interface PluginOptions {
     </div>`
 })
 
-export default class OptionsComponent {
+@Component({
+    selector: 'hero-form',
+    templateUrl: 'app/hero-form.component.html'
+})
+export class OptionsFormComponent {
 
     public options: PluginOptions = {
         api_url: "",
