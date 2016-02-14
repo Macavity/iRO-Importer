@@ -5809,5 +5809,12 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
+.ng-valid[required] {
+  border-left: 5px solid #42A948;
+  /* green */ }
+
+.ng-invalid {
+  border-left: 5px solid #a94442;
+  /* red */ }
 
 /*# sourceMappingURL=main.css.map */

@@ -3,42 +3,47 @@
 
 import "reflect-metadata";
 
+// Angular2 Imports
 import {Component} from 'angular2/core';
 import {bootstrap} from 'angular2/platform/browser';
 
-import * as $ from "jquery";
+// JQuery
+//import * as $ from "jquery";
 
-import OptionsComponent from "./OptionsComponent";
+import {OptionsFormComponent} from "./OptionsFormComponent";
 import ChromeHandler from "./ChromeHandler";
 import {BrowserHandler,BrowserType} from "./BrowserHandler";
 
 declare var window:Window;
 
-
-class Main {
-
+@Component({
+    selector: 'app',
+    template: '<options-form></options-form>',
+    directives: [OptionsFormComponent]
+})
+export class Main {
 
     constructor(){
     }
 
 }
 
-$(() => {
+//$(() => {
 
-    let pathname = window.location.pathname;
+let pathname = window.location.pathname;
 
-    var localStorageKey = ['client_serial'];
+var localStorageKey = ['client_serial'];
 
-    for(let i = 0, length = localStorageKey.length; i < length; ++i){
-        if(typeof localStorage[localStorageKey[i]] === "undefined"){
-            window.localStorage.setItem(localStorageKey[i], "");
-        }
+for(let i = 0, length = localStorageKey.length; i < length; ++i){
+    if(typeof localStorage[localStorageKey[i]] === "undefined"){
+        window.localStorage.setItem(localStorageKey[i], "");
     }
+}
 
-    //bootstrap(Main);
+bootstrap(Main);
 
-    if(pathname == "/browser_action/browser_action.html"){
-        bootstrap(OptionsComponent);
-    }
+    /*if(pathname == "/browser_action/browser_action.html"){
+        bootstrap(OptionsFormComponent);
+    }*/
 
-});
+//});

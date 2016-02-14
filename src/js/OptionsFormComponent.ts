@@ -8,81 +8,21 @@ import {Component} from 'angular2/core';
 import {NgForm}    from 'angular2/common';
 import {bootstrap} from 'angular2/platform/browser';
 import {BrowserHandler} from "./BrowserHandler";
+import {Options} from "./Options";
 
-import * as $ from "jquery";
+//import * as $ from "jquery";
 
-export class PluginOptions {
-
-    constructor(
-        public serial: string,
-        public api_url: string
-    ) {
-
-    }
-}
 
 /*
  * Options Page
  */
 @Component({
-    selector: 'plugin-options',
-    template : `
-    <div class="iro-login container-fluid" style="width:300px">
-        <div class="row">
-            <div class="col-md-12">
-                <h3 data-l10n="importer-headline">
-                    iRO Importer
-                </h3>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title" data-l10n="login">
-                            Login
-                        </h3>
-                    </div>
-                    <div class="panel-body">
-                        <form class="iro-login__form form-horizontal" role="form">
-                            <div class="form-group"
-                                [class.has-success]="options.api_url && validateApiUrl(options.api_url)">
-                                <label class="col-sm-2" for="iro-login__api-url" data-l10n="client-api">
-                                    API URL
-                                </label>
-                                <div class="col-sm-10">
-                                    <input id="iro-login__api-url" [(ngModel)]="options.api_url" type="text" class="form-control iro-login__api-url" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2" for="iro-login__serial" data-l10n="client-serial">
-                                    Seriennummer
-                                </label>
-                                <div class="col-sm-10">
-                                    <input id="iro-login__serial" [(ngModel)]="options.serial" type="text" class="form-control iro-login__serial" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                    <button id="iro-login__submit" type="submit" class="btn btn-primary" data-l10n="save" (click)="saveOptions()">
-                                        Speichern
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>`
-})
-
-@Component({
-    selector: 'hero-form',
-    templateUrl: 'app/hero-form.component.html'
+    selector: 'options-form',
+    templateUrl: 'options-form.component.html'
 })
 export class OptionsFormComponent {
 
-    public options: PluginOptions = {
-        api_url: "",
-        serial: ""
-    };
+    public model = new Options("a", "b");
 
     private browser:BrowserHandler;
 
@@ -93,6 +33,7 @@ export class OptionsFormComponent {
     private apiUrl: string;
     private serial: string;
 
+    public submitted = false;
 
     private body:JQuery;
 
@@ -103,21 +44,30 @@ export class OptionsFormComponent {
         this.browser = new BrowserHandler();
 
         // Get options from storage
-        this.options = this.browser.getOptions();
+        let browserOptions = this.browser.getOptions();
+        //this.model = new Options(browserOptions.serial, browserOptions.api_url);
 
         this.serialInput = $("#iro-login__serial");
         this.apiInput = $("#iro-login__api-url");
 
     }
 
-    public saveOptions(options:PluginOptions){
+    public onSubmit(){
+        this.submitted = true;
+    }
+
+    get diagnostic() {
+        return JSON.stringify(this.model);
+    }
+
+    public saveOptions(options:Options){
         if(this.validateSerial(options) && this.validateApiUrl(options)){
 
             $.ajax({
                 url: options.api_url+'/'+options.serial+'/systemcheck', success: (result) => {
 
-                    this.options = options;
-                    this.browser.saveOptions(this.options);
+                    this.model = options;
+                    this.browser.saveOptions(this.model);
 
                 }});
 
@@ -126,7 +76,7 @@ export class OptionsFormComponent {
         }
     }
 
-    public validateApiUrl(options:PluginOptions){
+    public validateApiUrl(options:Options){
         let apiUrl = options.api_url;
         let validUrl = apiUrl.match(/(https?:\/\/|)([A-z0-9][A-z0-9\.\-\_]+)/g);
 
@@ -151,7 +101,7 @@ export class OptionsFormComponent {
 
     }
 
-    private validateSerial(options:PluginOptions){
+    private validateSerial(options:Options){
 
         var serial = options.serial;
 

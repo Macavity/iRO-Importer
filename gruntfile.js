@@ -69,6 +69,17 @@ module.exports = function(grunt) {
                     }
                 ]
             },
+            views: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'src/views',
+                        src: ['**/*'],
+                        dest: 'build/chrome/views',
+                        filter: 'isFile'
+                    }
+                ]
+            },
             fonts: {
                 files: [
                     {
@@ -133,18 +144,16 @@ module.exports = function(grunt) {
              * Watch for js changes during development and build Dev-Files
              */
             chrome: {
-                files: [
-                    "src/chrome/**/*"
-                ],
-                tasks: [
-                    "copy:chrome"
-                ]
+                files: [ "src/chrome/**/*" ],
+                tasks: [ "copy:chrome" ]
+            },
+            views: {
+                files: [ "src/views/**/*" ],
+                tasks: [ "copy:views" ]
             },
 
             ts: {
-                files: [
-                    "src/js/*.ts"
-                ],
+                files: [ "src/js/*.ts" ],
                 tasks: ["browserify:watch","copy:js"]
             }
 
@@ -171,10 +180,11 @@ module.exports = function(grunt) {
         grunt.log.writeln("Build Chrome extensions");
 
         grunt.task.run([
-            "clean:chrome",
             "browserify:main",
+            "browserify:libs",
             "sass:main",
             "copy:fonts",
+            "copy:views",
             "copy:css",
             "copy:js",
             "copy:chrome",

@@ -1,0 +1,64 @@
+<div class="iro-login container-fluid" style="width:350px">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 data-l10n="importer-headline">
+                iRO Importer
+            </h3>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title" data-l10n="login">
+                        Login
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    {{diagnostic}}
+                    <form class="iro-login__form form-horizontal" role="form" (ngSubmit)="onSubmit()" #optionsForm="ngForm">
+                        <div class="form-group">
+                            <label class="col-sm-5" for="iro-login__api-url" data-l10n="client-api">
+                                API URL
+                            </label>
+                            <div class="col-sm-7">
+                                <input
+                                        id="iro-login__api-url"
+                                        type="text"
+                                        class="form-control iro-login__api-url"
+                                        [(ngModel)]="model.api_url"
+                                        ngControl="api_url"
+                                        #api_url="ngForm"
+                                />
+                                <div [hidden]="api_url.valid || api_url.pristine" class="alert alert-danger">
+                                    Bitte tragen Sie eine API URL ein.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-5" for="iro-login__serial" data-l10n="client-serial">
+                                Seriennummer
+                            </label>
+                            <div class="col-sm-7">
+                                <input
+                                        id="iro-login__serial"
+                                        type="text"
+                                        class="form-control iro-login__serial"
+                                        [(ngModel)]="model.serial"
+                                        ngControl="serial"
+                                        #serial="ngForm"
+                                />
+                                <div [hidden]="serial.valid || serial.pristine" class="alert alert-danger">
+                                    Bitte tragen Sie Ihre iRO Seriennummer ein.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-5 col-sm-7">
+                                <button id="iro-login__submit" type="submit" class="btn btn-primary" data-l10n="save" [disabled]="!optionsForm.form.valid">
+                                    Speichern
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

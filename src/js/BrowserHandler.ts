@@ -1,6 +1,6 @@
 
 import ChromeHandler from "./ChromeHandler";
-import {PluginOptions} from "./OptionsComponent";
+import {Options} from "./Options";
 
 export enum BrowserType {
     Chrome,
@@ -36,7 +36,7 @@ export class BrowserHandler {
      * Get from Storage
      */
 
-    public getOptions():PluginOptions{
+    public getOptions():Options{
         return {
             api_url: this.browser.getStorageVariable(storageKeys.api_url),
             serial: this.browser.getStorageVariable(storageKeys.serial)
@@ -55,7 +55,7 @@ export class BrowserHandler {
      * Save to Storage
      */
 
-    public saveOptions(options:PluginOptions){
+    public saveOptions(options:Options){
         this.browser.setStorageVariable(storageKeys.api_url, options.api_url);
         this.browser.setStorageVariable(storageKeys.serial, options.serial);
     }
