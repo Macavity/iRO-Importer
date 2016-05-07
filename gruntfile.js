@@ -8,6 +8,50 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
 
+        browserify: {
+            libs: {
+                options: {
+                    shim: {
+                        jquery: {
+                            path: './node_modules/jquery/dist/jquery.min.js',
+                            exports: '$'
+                        }
+                    }
+                },
+                src: [
+                    './node_modules/jquery/dist/jquery.min.js'
+                ],
+                dest: 'build/chrome/js/libs.js'
+            },
+            main: {
+                src: "src/js/main.ts",
+                dest: "src/js/main.js",
+                options: {
+                    alias: {
+                        jquery: './node_modules/jquery/dist/jquery.min.js'
+                    },
+                    external: {
+                        jquery: './node_modules/jquery/dist/jquery.min.js'
+                    },
+                    browserifyOptions: {
+                        debug: true
+                    },
+                    plugin: ['tsify']
+                }
+            },
+            watch: {
+                src: "src/js/main.ts",
+                dest: "src/js/main.js",
+                options: {
+                    watch: true,
+                    browserifyOptions: {
+                        debug: true
+                    },
+                    plugin: ['tsify']
+                }
+            }
+        },
+
         /*
          * Copy Task
          */
@@ -17,18 +61,24 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         cwd: 'src/chrome',
-                        src: '**/*',
+                        src: [
+                            '**/*'
+                        ],
                         dest: 'build/chrome',
                         filter: 'isFile'
                     }
-                ]/*,
-                options: {
-                    process: function (content, srcpath) {
-
-                        return content
-                            .replace('PACKAGE_VERSION', settings.version);
+                ]
+            },
+            views: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'src/views',
+                        src: ['**/*'],
+                        dest: 'build/chrome/views',
+                        filter: 'isFile'
                     }
-                }*/
+                ]
             },
             fonts: {
                 files: [
@@ -36,32 +86,18 @@ module.exports = function(grunt) {
                         expand: true,
                         cwd: 'node_modules/bootstrap-sass/assets/fonts/bootstrap',
                         src: '*',
-                        dest: 'build/css/',
-                        filter: 'isFile'
+                        dest: 'build/chrome/css/'
                     }
                 ]
             },
             css: {
                 files: [
-                    {
-                        expand: true,
-                        cwd: 'build/css/',
-                        src: '*',
-                        dest: 'build/chrome/css/',
-                        filter: 'isFile'
-                    }/*,{
-                        expand: true,
-                        cwd: 'build/css/',
-                        src: '*',
-                        dest: 'build/chrome/css/',
-                        filter: 'isFile'
-                    },{
-                        expand: true,
-                        cwd: 'build/css/',
-                        src: '*',
-                        dest: 'build/chrome/css/',
-                        filter: 'isFile'
-                    }*/
+                    {   cwd: 'src/sass/', src: ['main.css', 'main.css.map'], dest: 'build/chrome/css/', expand: true }
+                ]
+            },
+            js : {
+                files: [
+                    {   cwd: 'src/js/', src: ['main.js'], dest: 'build/chrome/js/', expand: true}
                 ]
             },
             lib: {
@@ -70,8 +106,7 @@ module.exports = function(grunt) {
                         expand: true,
                         flatten:true,
                         src: [
-                            'node_modules/jquery/dist/jquery.min.js',
-                            'node_modules/angular/angular.min.js'
+                            'node_modules/jquery/dist/jquery.min.js'
                         ],
                         dest: 'build/chrome/js/'
                     }
@@ -84,9 +119,9 @@ module.exports = function(grunt) {
         },
 
         sass: {
-            build: {
+            main: {
                 files: {
-                    'build/css/main.css': 'sass/main.scss'
+                    'src/sass/main.css': 'src/sass/main.scss'
                 }
             }
         },
@@ -100,7 +135,7 @@ module.exports = function(grunt) {
                     "sass/*.scss"
                 ],
                 tasks: [
-                    "sass:build",
+                    "sass:main",
                     "copy:css"
                 ]
             },
@@ -109,17 +144,23 @@ module.exports = function(grunt) {
              * Watch for js changes during development and build Dev-Files
              */
             chrome: {
-                files: [
-                    "src/chrome/**/*"
-                ],
-                tasks: [
-                    "copy:chrome"
-                ]
+                files: [ "src/chrome/**/*" ],
+                tasks: [ "copy:chrome" ]
+            },
+            views: {
+                files: [ "src/views/**/*" ],
+                tasks: [ "copy:views" ]
+            },
+
+            ts: {
+                files: [ "src/js/*.ts" ],
+                tasks: ["browserify:watch","copy:js"]
             }
 
         }
     });
 
+    grunt.loadNpmTasks("grunt-browserify");
     grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-clean");
@@ -131,10 +172,21 @@ module.exports = function(grunt) {
     grunt.registerTask("default", function(){
         grunt.log.writeln("build all extensions");
         grunt.task.run([
-            "clean:chrome",
-            "sass:build",
+            "chrome"
+        ]);
+    });
+
+    grunt.registerTask("chrome", function(){
+        grunt.log.writeln("Build Chrome extensions");
+
+        grunt.task.run([
+            "browserify:main",
+            "browserify:libs",
+            "sass:main",
             "copy:fonts",
+            "copy:views",
             "copy:css",
+            "copy:js",
             "copy:chrome",
             "copy:lib"
         ]);
