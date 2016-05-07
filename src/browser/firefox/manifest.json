@@ -1,8 +1,8 @@
 {
-  "version": "0.0.0",
-  "name": "browser-extension",
+  "version": "0.1.0",
+  "name": "iro-importer",
   "manifest_version": 2,
-  "description": "Redux counter example",
+  "description": "iRO Profile Importer",
   "applications": {
     "gecko": {
       "id": "crossbuilder@test.com"
